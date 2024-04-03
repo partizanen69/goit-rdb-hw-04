@@ -1,0 +1,64 @@
+drop schema if exists LibraryManagement;
+
+-- a) Назва схеми — “LibraryManagement”
+use sys;
+create schema LibraryManagement;
+use LibraryManagement;
+
+-- b) Таблиця "authors":
+-- author_id (INT, автоматично зростаючий PRIMARY KEY)
+-- author_name (VARCHAR)
+create table authors (
+	author_id int auto_increment primary key,
+    author_name  varchar(255) not null
+);
+
+-- c) Таблиця "genres":
+-- genre_id (INT, автоматично зростаючий PRIMARY KEY)
+-- genre_name (VARCHAR)
+create table genres (
+	genre_id int auto_increment primary key,
+    genre_name varchar(255) not null
+);
+
+-- d) Таблиця "books":
+-- book_id (INT, автоматично зростаючий PRIMARY KEY)
+-- title (VARCHAR)
+-- publication_year (YEAR)
+-- author_id (INT, FOREIGN KEY зв'язок з "Authors")
+-- genre_id (INT, FOREIGN KEY зв'язок з "Genres")
+create table books (
+	book_id int auto_increment primary key,
+    title varchar(255) not null,
+    publication_year year not null,
+    author_id int not null,
+    genre_id int not null,
+    foreign key (author_id) references authors(author_id),
+    foreign key (genre_id) references genres(genre_id)
+);
+
+-- e) Таблиця "users":
+-- user_id (INT, автоматично зростаючий PRIMARY KEY)
+-- username (VARCHAR)
+-- email (VARCHAR)
+create table users (
+	user_id int auto_increment primary key,
+    username varchar(255) not null,
+    email varchar(255) not null
+);
+
+-- f) Таблиця "borrowed_books":
+-- borrow_id (INT, автоматично зростаючий PRIMARY KEY)
+-- book_id (INT, FOREIGN KEY зв'язок з "Books")
+-- user_id (INT, FOREIGN KEY зв'язок з "Users")
+-- borrow_date (DATE)
+-- return_date (DATE)
+create table borrowed_books (
+	borrow_id int auto_increment primary key,
+    book_id int not null,
+    user_id int not null,
+    borrow_date date not null,
+    return_date date,
+    foreign key (book_id) references books(book_id),
+    foreign key (user_id) references users(user_id)
+);
